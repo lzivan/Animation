@@ -8,6 +8,7 @@ import android.os.CountDownTimer;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
@@ -35,6 +36,14 @@ public class MainActivity extends AppCompatActivity {
         pig = findViewById(R.id.imageView);
         txt = findViewById(R.id.txtView);
 
+        reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                txt.setText("10");
+                isTimerunning = true;
+            }
+        });
+
 
 
 
@@ -61,6 +70,14 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "item1 selected",Toast.LENGTH_SHORT);
                 return true;
             case R.id.menu_item2:
+
+                timeleftinmiliseconds = 8000;
+
+                startStop2();
+                updateTime2();
+
+                Animation anSettwo = AnimationUtils.loadAnimation(this, R.anim.zoomin);
+                pig.startAnimation(anSettwo);
                 Toast.makeText(this, "item2 selected",Toast.LENGTH_SHORT);
                 return true;
         }
@@ -90,6 +107,29 @@ public class MainActivity extends AppCompatActivity {
         isTimerunning = true;
     }
 
+    public void startStop2(){
+        if (isTimerunning){
+            stopTime();
+        }else{
+            starTime2();
+        }
+    }
+    public void starTime2(){
+        countDownTimer = new CountDownTimer(timeleftinmiliseconds,1000) {
+            @Override
+            public void onTick(long l) {
+                timeleftinmiliseconds = l;
+                updateTime2();
+            }
+
+            @Override
+            public void onFinish() {
+
+            }
+        }.start();
+        isTimerunning = true;
+    }
+
     public void stopTime(){
         countDownTimer.cancel();
         isTimerunning = false;
@@ -98,7 +138,18 @@ public class MainActivity extends AppCompatActivity {
     public void updateTime(){
 
         int seconds =  (int) timeleftinmiliseconds % 10000 / 1000;
-        seconds = 10 - seconds;
+
+
+
+        String timeLeftText;
+        timeLeftText = "" + seconds;
+        txt.setText(timeLeftText);
+    }
+
+    public void updateTime2(){
+
+        int seconds =  (int) timeleftinmiliseconds % 8000 / 1000;
+
 
 
         String timeLeftText;
